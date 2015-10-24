@@ -1,0 +1,22 @@
+{
+  "name": "aws-playground",
+  "version": "1.0.0",
+  "description": "Play with Amazon Web Services",
+  "main": "dynamodb.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skarger/aws-playground.git"
+  },
+  "author": "Stephen Karger",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/skarger/aws-playground/issues"
+  },
+  "homepage": "https://github.com/skarger/aws-playground#readme",
+  "dependencies": {
+    "aws-sdk": "^2.2.11"
+  }
+}
