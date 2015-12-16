@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+html, body { height: 100%; margin: 0; padding: 0; }
+#header {
+    text-align:center;
+    padding:5px;
+}
+#left {
+    float:left;
+    height: 100%;
+    width: 40%;
+    margin: 0;
+    padding: 0;
+    background-color:#eeeeee;
+}
+#right {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+#map {
+  height: 100%;
+}
+</style>
+
+
+<script src="../sdk/bower_components/aws-sdk/dist/aws-sdk.js"></script>
+<script src="../credentials.js"></script>
+<script src="../client.js"></script>
+<script src="../utils.js"></script>
+<script src="./consumerBase.js"></script>
+<script src="./logRecords.js"></script>
+<script src="./placeOnMap.js"></script>
+<script src="./weather.js"></script>
+<script>
+var kinesis = setupClient();
+</script>
+</head>
+
+<body>
+  <div id="header">
+    <h1>Dashboard (Consumer)</h1>
+  </div>
+
+  <div id="left">
+    <table id="locationTable">
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Latitude</th>
+          <th>Longitude</th>
+          <th>Weather</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+
+  <div id="right">
+    <div id="map"></div>
+  </div>
+
+  <script type="text/javascript">
+  var map;
+  function initMap() {
+    var oneStoryStreet = {lat: 42.374141, lng: -71.122078};
+
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: oneStoryStreet,
+      zoom: 15
+    });
+  }
+  </script>
+
+
+  <script>
+  if (true) {
+    window.onload = function() {
+      ConsumerBase.streamData(logRecords);
+      ConsumerBase.streamData(placeOnMap);
+      ConsumerBase.streamData(checkWeather);
+    };
+  }
+  </script>
+
+  <script>
+  var mapsUrl = "https://maps.googleapis.com/maps/api/js?key=" +
+    localCredentials.googleMapsKey + "&callback=initMap";
+
+  var s = document.createElement( 'script' );
+  s.setAttribute( 'async', '');
+  s.setAttribute( 'defer', '');
+  s.setAttribute( 'src', mapsUrl );
+  document.body.appendChild( s );
+  </script>
+
+</body>
+</html>

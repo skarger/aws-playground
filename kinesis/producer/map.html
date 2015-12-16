@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- AWS SDK -->
+<script src="../sdk/bower_components/aws-sdk/dist/aws-sdk.js"></script>
+<script src="../credentials.js"></script>
+<script src="../client.js"></script>
+<script src="../utils.js"></script>
+<script src="./producer.js"></script>
+
+<style type="text/css">
+  html, body { height: 100%; margin: 0; padding: 0; }
+  #map { height: 100%; }
+</style>
+
+<script>
+var kinesis = setupClient();
+</script>
+</head>
+
+<body>
+
+<h1>Location Reporter (Producer)</h1>
+
+<div id="map"></div>
+<script type="text/javascript">
+var map;
+function initMap() {
+  var oneStoryStreet = {lat: 42.374141, lng: -71.122078};
+
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: oneStoryStreet,
+    zoom: 16
+  });
+
+  var marker = new google.maps.Marker({
+    position: oneStoryStreet,
+    map: map,
+    title: 'Hello World!'
+  });
+
+  map.addListener('click', function(e) {
+    markLocationAndReport(e.latLng, map);
+  });
+
+  function markLocationAndReport(latlng, map) {
+    placeMarker(latlng, map);
+    Producer.submitLocation(kinesis, latlng.lat(), latlng.lng());
+  }
+
+  function placeMarker(latLng, map) {
+    var marker = new google.maps.Marker({
+      position: latLng,
+      map: map
+    });
+  }
+}
+</script>
+
+<script>
+var mapsUrl = "https://maps.googleapis.com/maps/api/js?key=" +
+  localCredentials.googleMapsKey + "&callback=initMap";
+
+var s = document.createElement( 'script' );
+s.setAttribute( 'async', '');
+s.setAttribute( 'defer', '');
+s.setAttribute( 'src', mapsUrl );
+document.body.appendChild( s );
+</script>
+
+</body>
+</html>
